@@ -1,0 +1,95 @@
+﻿@model Mvc3ToolsUpdateWeb_Default.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Create a New Account</h2>
+<p>
+    Use the form below to create a new account.
+</p>
+<p>
+    @*Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.*@
+</p>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+{
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">
+            <strong>Success!</strong> @ViewBag.Message
+        </div>
+    }
+}
+
+else
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.", new { @class = "text-danger" })
+        <div>
+            <fieldset>
+                <legend>Account Information</legend>
+                <div class="form-group">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(m => m.Username, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        @Html.ValidationMessage("ErrorEmail", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="editor-field">
+                        @Html.PasswordFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="editor-field">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <p>
+                    <input type="submit" value="Register" />
+                </p>
+            </fieldset>
+        </div>
+
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong> @ViewBag.Message
+            </div>
+        }
+    }
+}
+<div>
+    @Html.ActionLink("Logon", "Logon")
+</div>
